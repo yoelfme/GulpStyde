@@ -3,7 +3,9 @@ var gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps'),
   cssnano = require('gulp-cssnano'),
   argv = require('yargs').argv,
-  gulpif = require('gulp-if');
+  gulpif = require('gulp-if'),
+  concat = require('gulp-concat'),
+  uglify = require('gulp-uglify');
 
 var isProduction;
 
@@ -15,16 +17,34 @@ if (argv.prod) {
 
 var config = {
   scssDir: './assets/scss',
-  cssDir: './assets/css'
+  cssDir: './assets/css',
+  jsDir: './assets/js'
 };
 
 gulp.task('style', function () {
-  gulp.src(config.scssDir + '/*.scss')
+  return gulp.src(config.scssDir + '/*.scss')
     .pipe(sourcemaps.init())
     .pipe(sass())
     .on('error', sass.logError)
     .pipe(gulpif(isProduction, cssnano(), sourcemaps.write('maps')))
-    .pipe(gulp.dest(config.cssDir))
+    .pipe(gulp.dest(config.cssDir));
+});
+
+gulp.task('concat', function () {
+  return gulp.src([
+      config.jsDir + '/start.js',
+      config.jsDir + '/main.js',
+      config.jsDir + '/end.js',
+    ])
+    .pipe(concat('scripts.js'))
+    .pipe(gulp.dest(config.jsDir));
+});
+
+gulp.task('compress', ['concat'], function () {
+  return gulp.src(config.jsDir + '/scripts.js')
+    .pipe(uglify())
+    .on('error', console.error.bind(console))
+    .pipe(gulp.dest(config.jsDir + '/min'));
 });
 
 gulp.task('watch', function() {
