@@ -50,7 +50,11 @@ gulp.task('compress', ['concat'], function () {
 });
 
 gulp.task('imagemin', function () {
-  return gulp.src(config.imgDir + '/*')
+  return gulp.src([
+      config.imgDir + '/*.png',
+      config.imgDir + '/*.jpg',
+      config.imgDir + '/*.jpeg'
+    ])
     .pipe(imagemin())
     .pipe(gulp.dest(config.imgDir + '/'))
 })
