@@ -51,9 +51,8 @@ gulp.task('compress', ['concat'], function () {
 
 gulp.task('imagemin', function () {
   return gulp.src([
-      config.imgDir + '/*.png',
-      config.imgDir + '/*.jpg',
-      config.imgDir + '/*.jpeg'
+      config.imgDir + '/*.{png,jpg,jpeg}',
+      '!' + config.imgDir + '/free-60-icons-03.png'
     ])
     .pipe(imagemin())
     .pipe(gulp.dest(config.imgDir + '/'))
