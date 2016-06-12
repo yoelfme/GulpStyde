@@ -6,7 +6,8 @@ var gulp = require('gulp'),
   gulpif = require('gulp-if'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
-  imagemin = require('gulp-imagemin');
+  imagemin = require('gulp-imagemin'),
+  del = require('del');
 
 var isProduction;
 
@@ -56,6 +57,11 @@ gulp.task('imagemin', function () {
     ])
     .pipe(imagemin())
     .pipe(gulp.dest(config.imgDir + '/'))
+});
+
+gulp.task('cleanup', function () {
+  del(config.cssDir + '/maps/*');
+  del(config.cssDir + '/maps');
 })
 
 gulp.task('watch', function() {
