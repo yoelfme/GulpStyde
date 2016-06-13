@@ -6,5 +6,5 @@ var data = [1, 2, 3, 4, 5, 5, 6, 6];
 console.log(unique(data));
 
 // Usando nuestro archivo local
-var y = start(3);
+var y = start.b(3);
 console.log('N: ' + y);
